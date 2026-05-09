@@ -1,0 +1,186 @@
+<div class="container py-4">
+
+  <!-- HEADER -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold">Manage Homes</h3>
+
+    <div>
+      <span class="badge bg-info text-dark me-2">
+        {{ isAdmin ? 'Admin Mode' : 'User Mode' }}
+      </span>
+
+      <button 
+        *ngIf="isAdmin"
+        pButton 
+        label="Add Home"
+        icon="pi pi-plus"
+        (click)="openDialog()">
+      </button>
+    </div>
+  </div>
+
+  <!-- CARDS -->
+  <div class="row g-3">
+
+    <div class="col-md-4" *ngFor="let home of homes">
+      <p-card class="shadow border-0">
+
+        <h5 class="fw-bold">{{ home.name }}</h5>
+
+        <small class="text-muted">
+          {{ home.address }}, {{ home.city }}, {{ home.state }}
+        </small>
+
+        <hr>
+
+        <div class="d-flex justify-content-between">
+          <span>Total Budget</span>
+          <span class="text-success fw-bold">₹{{ home.totalIncome }}</span>
+        </div>
+
+        <div class="d-flex justify-content-between mt-2">
+          <span>Used</span>
+          <span class="text-danger fw-bold">₹{{ home.used }}</span>
+        </div>
+
+        <div class="d-flex justify-content-between mt-2">
+          <span>Remaining</span>
+          <span class="fw-bold"
+            [ngClass]="{
+              'text-success': getRemaining(home) > 3000,
+              'text-warning': getRemaining(home) <= 3000 && getRemaining(home) > 1000,
+              'text-danger': getRemaining(home) <= 1000
+            }">
+            ₹{{ getRemaining(home) }}
+          </span>
+        </div>
+
+        <div class="mt-3">
+          <p-progressBar [value]="getPercentage(home)"></p-progressBar>
+        </div>
+
+        <div class="d-flex justify-content-between mt-3">
+          <span>Members</span>
+          <span class="fw-bold">{{ home.members }}</span>
+        </div>
+
+        <div class="text-muted small mt-2">
+          {{ home.description }}
+        </div>
+
+        <hr>
+
+        <!-- ACTIONS -->
+        <div class="d-flex justify-content-between">
+
+          <button 
+            pButton 
+            label="View"
+            class="p-button-sm"
+            (click)="viewHome(home)">
+          </button>
+
+          <div *ngIf="isAdmin" class="d-flex gap-2">
+
+            <button 
+              pButton 
+              icon="pi pi-pencil"
+              class="p-button-sm p-button-warning"
+              (click)="editHome(home)">
+            </button>
+
+            <button 
+              pButton 
+              icon="pi pi-trash"
+              severity="danger"
+              class="p-button-sm"
+              (click)="deleteHome(home.id)">
+            </button>
+
+          </div>
+
+        </div>
+
+      </p-card>
+    </div>
+
+  </div>
+
+  <!-- POPUP -->
+  <p-dialog 
+    [header]="isEditMode ? 'Edit Home' : 'Add Home'"
+    [(visible)]="showDialog"
+    [modal]="true"
+    [style]="{width:'420px'}">
+
+    <!-- BASIC DETAILS -->
+    <div class="mb-3">
+      <label>Home Name</label>
+      <input [(ngModel)]="newHome.name" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+      <label>Address</label>
+      <input [(ngModel)]="newHome.address" class="form-control" />
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label>City</label>
+        <input [(ngModel)]="newHome.city" class="form-control" />
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label>State</label>
+        <input [(ngModel)]="newHome.state" class="form-control" />
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label>Total Budget</label>
+      <input type="number" [(ngModel)]="newHome.totalIncome" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+      <label>Members</label>
+      <input type="number" [(ngModel)]="newHome.members" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+      <label>Description</label>
+      <textarea [(ngModel)]="newHome.description" class="form-control"></textarea>
+    </div>
+
+    <!-- 🔥 CATEGORY BUDGET SECTION -->
+    <hr>
+
+    <h6 class="fw-bold">Category Budgets</h6>
+
+    <div *ngFor="let cat of categoryList; let i = index" class="mb-2">
+
+      <div class="d-flex justify-content-between align-items-center">
+
+        <span>{{ cat }}</span>
+
+        <input 
+          type="number"
+          class="form-control w-50"
+          [(ngModel)]="categoryBudgetInputs[i]"
+          placeholder="Enter amount" />
+
+      </div>
+
+    </div>
+
+    <!-- SAVE BUTTON -->
+    <button 
+      pButton
+      [label]="isEditMode ? 'Update Home' : 'Add Home'"
+      icon="pi pi-check"
+      class="w-100 mt-3"
+      (click)="saveHome()">
+    </button>
+
+  </p-dialog>
+
+</div>

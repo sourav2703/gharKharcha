@@ -1,0 +1,77 @@
+<div class="container py-4">
+
+  <!-- HEADER -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="fw-bold">All Expenses</h3>
+
+    <button 
+      pButton 
+      label="Back"
+      icon="pi pi-arrow-left"
+      class="p-button-text"
+      (click)="goBack()">
+    </button>
+  </div>
+
+  <!-- FILTER -->
+  <div class="mb-3">
+    <p-dropdown 
+      [options]="categories"
+      [(ngModel)]="selectedCategory"
+      placeholder="Filter by Category"
+      (onChange)="filterCategory()"
+      class="w-25">
+    </p-dropdown>
+  </div>
+
+  <!-- TABLE -->
+  <p-table 
+    [value]="filteredExpenses" 
+    [paginator]="true" 
+    [rows]="5"
+    class="shadow">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Category</th>
+        <th>Subcategory</th>
+        <th>Qty</th>
+        <th>Price</th>
+        <th>Total</th>
+        <th>User</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-exp>
+      <tr>
+        <td>{{ exp.category?.name }}</td>
+        <td>{{ exp.subcategory }}</td>
+        <td>{{ exp.quantity }}</td>
+        <td>₹{{ exp.price }}</td>
+        <td class="fw-bold text-success">₹{{ exp.total }}</td>
+        <td>{{ exp.paidBy?.name }}</td>
+        <td>{{ exp.date | date }}</td>
+
+        <td class="d-flex gap-2">
+          <button 
+            pButton 
+            icon="pi pi-pencil"
+            class="p-button-warning p-button-sm"
+            (click)="editExpense(exp)">
+          </button>
+
+          <button 
+            pButton 
+            icon="pi pi-trash"
+            class="p-button-danger p-button-sm"
+            (click)="deleteExpense(exp.id)">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+</div>

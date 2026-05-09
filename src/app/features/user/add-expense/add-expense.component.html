@@ -1,0 +1,141 @@
+<div class="container py-4">
+
+  <!-- HEADER -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h3 class="fw-bold mb-0">Add Expense</h3>
+      <small class="text-muted">Track your spending easily</small>
+    </div>
+
+    <button 
+      pButton 
+      label="Back"
+      icon="pi pi-arrow-left"
+      class="p-button-text"
+      (click)="goBack()">
+    </button>
+  </div>
+
+  <div class="row">
+
+    <!-- LEFT -->
+    <div class="col-lg-7">
+      <p-card class="shadow border-0">
+
+        <form [formGroup]="form" class="p-fluid">
+
+          <!-- CATEGORY -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="fw-semibold">Category</label>
+              <p-dropdown 
+                [options]="categories"
+                optionLabel="name"
+                formControlName="category"
+                placeholder="Select Category"
+                (onChange)="onCategoryChange($event)">
+              </p-dropdown>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="fw-semibold">Sub Category</label>
+              <p-dropdown 
+                [options]="subcategories"
+                formControlName="subcategory"
+                placeholder="Select Subcategory">
+              </p-dropdown>
+            </div>
+          </div>
+
+          <!-- QUANTITY / PRICE / TOTAL -->
+          <div class="row">
+
+            <div class="col-md-4 mb-3">
+              <label>Quantity</label>
+              <input type="number" pInputText formControlName="quantity">
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <label>Price (₹)</label>
+              <input type="number" pInputText formControlName="price">
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <label>Total (₹)</label>
+              <input type="number" pInputText formControlName="total" readonly>
+            </div>
+
+          </div>
+
+          <!-- TITLE -->
+          <div class="mb-3">
+            <label>Expense Title</label>
+            <input pInputText formControlName="title">
+          </div>
+
+          <!-- USER + DATE -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label>Paid By</label>
+              <p-dropdown 
+                [options]="users"
+                optionLabel="name"
+                formControlName="paidBy">
+              </p-dropdown>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label>Date</label>
+              <p-calendar formControlName="date"></p-calendar>
+            </div>
+          </div>
+
+          <!-- NOTE -->
+          <div class="mb-3">
+            <label>Note</label>
+            <textarea formControlName="note" class="form-control"></textarea>
+          </div>
+
+          <!-- SAVE -->
+          <button 
+            pButton 
+            label="Save Expense"
+            class="w-100"
+            (click)="saveExpense()">
+          </button>
+
+        </form>
+
+      </p-card>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="col-lg-5">
+
+      <p-card class="shadow border-0 mb-3">
+        <h5 class="fw-bold">Quick Info</h5>
+
+        <div class="d-flex justify-content-between">
+          <span>Total</span>
+          <span>₹{{ home?.totalIncome }}</span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <span>Used</span>
+          <span>₹{{ home?.used }}</span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <span>Remaining</span>
+          <span>
+            ₹{{ (home?.totalIncome || 0) - (home?.used || 0) }}
+          </span>
+        </div>
+
+      </p-card>
+
+    </div>
+
+  </div>
+
+</div>

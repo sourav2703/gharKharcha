@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+
+  <span class="navbar-brand fw-bold">Ghar Kharcha</span>
+
+  <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="nav">
+
+    <ul class="navbar-nav me-auto">
+
+      <!-- COMMON -->
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+      </li>
+    
+
+      <!-- USER MENU -->
+      <ng-container *ngIf="!isAdmin">
+       
+      </ng-container>
+
+      <!-- ADMIN MENU -->
+      <ng-container *ngIf="isAdmin">
+        
+
+        <!-- <li class="nav-item">
+          <a class="nav-link" routerLink="/users" routerLinkActive="active">Users</a>
+        </li> -->
+      </ng-container>
+
+    </ul>
+
+    <!-- RIGHT SIDE -->
+    <span class="text-white me-3 small">
+      {{ user?.name }} ({{ user?.role }})
+    </span>
+
+    <button pButton label="Logout" icon="pi pi-sign-out" (click)="logout()"></button>
+
+  </div>
+</nav>
